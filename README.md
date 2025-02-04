@@ -107,11 +107,8 @@ print(f"Sentiment: {sentiment}")
 ## 📊 Performance Metrics
 
 ### Evaluation Results
-- **Accuracy:** [Insert specific accuracy percentage]
-- **F1-Score:** 
-  - Negative Class: [Percentage]
-  - Neutral Class: [Percentage]
-  - Positive Class: [Percentage]
+- **Accuracy:** 0.856
+- **F1-Score:** 0.853
 
 ### Confusion Matrix
 [Include a visual or textual representation of the confusion matrix]
@@ -143,14 +140,6 @@ print(f"Sentiment: {sentiment}")
   year={2020}
 }
 ```
-
-## 🤝 Contributing
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](your-repo-issues-link).
-
-## 📄 License
-[Specify your license, e.g., MIT, Apache 2.0]
-
----
 
 **💡 Pro Tip:** Always validate model performance on your specific dataset!
 
