@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+nltk
+wordcloud
+textblob
+ipykernel
+ipywidgets
+transformers[sentencepiece]
+datasets
+evaluate
+torch
