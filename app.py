@@ -15,9 +15,13 @@ if review_text:
     # Predict sentiment
     sentiment = pipe(review_text)
     
+    # Extract the label and score
+    sentiment_label = sentiment[0]['label']
+    sentiment_score = sentiment[0]['score']
+    
     # Display the result
-    st.write(f"Sentiment: {sentiment[0]['label']}")
-    st.write(f"Confidence: {sentiment[0]['score']:.2f}")
+    st.write(f"Sentiment: {sentiment_label}")
+    st.write(f"Confidence: {sentiment_score:.2f}")
 
 # Run the app
 if __name__ == "__main__":
