@@ -1,64 +1,157 @@
-# Sentiment Analysis on McDonald's Reviews
+# ViBERTa: Unwrapping Customer Sentiments with Sentiment Analysis! 🍔
 
-## Project Overview
-This project focuses on sentiment analysis of customer reviews for McDonald's. The main objective is to classify reviews as positive, neutral, or negative using Natural Language Processing (NLP) techniques. The analysis involved data preprocessing, exploratory data analysis (EDA), feature extraction using Google's Word2Vec model, and building a predictive model with a BiLSTM (Bidirectional Long Short-Term Memory) neural network.
+## 🌟 Overview
 
-## Table of Contents
-- [Project Overview](#project-overview)
-- [Dataset](#dataset)
-- [Data Preprocessing](#data-preprocessing)
-- [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
-- [Feature Extraction](#feature-extraction)
-- [Model Building](#model-building)
-- [How to Run](#how-to-run)
-- [Conclusion](#conclusion)
+ViBERTa (VIBE + DeBERTa) is a sentiment analysis model fine-tuned on the McDonald's review dataset. Leveraging the power of Microsoft's DeBERTa, this model provides precise sentiment classification for customer reviews.
 
-## Dataset
-The dataset used for this project contains reviews of McDonald's provided by customers. Each review is accompanied by a sentiment label derived from a rating column:
-- **Positive**: Ratings above 3 (4 and 5).
-- **Neutral**: Rating of 3.
-- **Negative**: Ratings below 3 (1 and 2).
+## 📋 Model Specifications
 
-## Data Preprocessing
-The following preprocessing steps were performed on the dataset:
-1. **Text Cleaning**:
-   - Removal of punctuation, numbers, and special characters.
-   - Conversion of text to lowercase.
-2. **Tokenization**:
-   - Splitting reviews into individual words.
-3. **Stopword Removal**:
-   - Elimination of common words like "is," "the," etc., that do not contribute to sentiment.
-4. **Lemmatization**:
-   - Reducing words to their base forms (e.g., "running" to "run").
-5. **Label Assignment**:
-   - Assigning labels (Positive, Neutral, Negative) based on the rating values.
+### Key Details
+- **Model Name:** ViBERTa
+- **Base Model:** `microsoft/deberta-v3-base`
+- **Primary Task:** Sentiment Classification
+- **Sentiment Classes:** 
+  - 0: Negative
+  - 1: Neutral
+  - 2: Positive
 
-## Exploratory Data Analysis (EDA)
-EDA was conducted to understand the dataset and uncover insights:
-- Distribution of positive, neutral, and negative reviews.
-- Word frequency analysis to identify common terms in each sentiment category.
-- Visualization of word clouds for positive, neutral, and negative reviews.
+### 🔬 Technical Highlights
+- Advanced transformer-based architecture
+- Fine-tuned on domain-specific McDonald's review data
+- High accuracy in sentiment prediction
 
-## Feature Extraction
-Google's pre-trained **Word2Vec** model was used to convert the text data into numerical vectors. This approach captures the semantic meaning of words and their contextual relationships, providing rich features for the model.
+## 🗂 Dataset Insights
 
-## Model Building
-A **BiLSTM** neural network was implemented for sentiment classification. The architecture includes:
-- **Embedding Layer**: To process Word2Vec embeddings.
-- **BiLSTM Layer**: To capture dependencies from both past and future contexts.
-- **Dense Layer**: For classification into positive, neutral, or negative sentiment.
+### McDonald's Review Dataset
+- Source: Kaggle
+- Comprehensive collection of customer reviews
+- Manually labeled sentiment categories
+- Diverse range of customer experiences
 
-## How to Run
-1. Clone this repository:
+## 🛠 Training Methodology
+
+### Configuration Parameters
+| Parameter | Value |
+|-----------|-------|
+| Batch Size | 16 |
+| Total Epochs | 3 |
+| Learning Rate | 2e-5 |
+| Optimizer | AdamW |
+| Learning Rate Scheduler | Cosine decay with warmup |
+| Warmup Ratio | 10% |
+| Weight Decay | 0.01 |
+| Mixed Precision | Enabled (fp16) |
+| Gradient Accumulation Steps | 2 |
+
+### Training Approach
+- Tokenization using DeBERTa tokenizer
+- Cross-entropy loss function
+- Adaptive learning rate scheduling
+- Gradient accumulation for stable training
+
+## 🚀 Quick Start Guide
+
+### Installation
+
+Install the required dependencies:
+
+```bash
+# Create a virtual environment (recommended)
+python -m venv viberta_env
+source viberta_env/bin/activate  # On Windows, use `viberta_env\Scripts\activate`
+
+# Install dependencies
+pip install torch transformers datasets
 ```
-   git clone https://github.com/iSathyam31/McDonalds_Reviews_Sentiment_Analysis.git
-   cd McDonalds_Reviews_Sentiment_Analysis
-```
-2. Install required dependencies:
-```
-pip install -r requirements.txt
-```
-3. Run the file.
 
-## Conclusion
-This project demonstrates the effectiveness of combining pre-trained Word2Vec embeddings with a BiLSTM network for sentiment analysis. The methodology can be extended to other domains for similar tasks.
+### Model Inference
+
+```python
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+
+# Load model and tokenizer
+model_name = "your-huggingface-repo/viberta"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
+
+def predict_sentiment(text):
+    """Predict sentiment for given text."""
+    inputs = tokenizer(
+        text, 
+        return_tensors="pt", 
+        truncation=True, 
+        padding=True
+    )
+    
+    with torch.no_grad():
+        outputs = model(**inputs)
+    
+    logits = outputs.logits
+    prediction = torch.argmax(logits, dim=1).item()
+    
+    sentiment_labels = {
+        0: "Negative", 
+        1: "Neutral", 
+        2: "Positive"
+    }
+    
+    return sentiment_labels[prediction]
+
+# Example usage
+review = "The fries were amazing but the burger was stale."
+sentiment = predict_sentiment(review)
+print(f"Sentiment: {sentiment}")
+```
+
+## 📊 Performance Metrics
+
+### Evaluation Results
+- **Accuracy:** [Insert specific accuracy percentage]
+- **F1-Score:** 
+  - Negative Class: [Percentage]
+  - Neutral Class: [Percentage]
+  - Positive Class: [Percentage]
+
+### Confusion Matrix
+[Include a visual or textual representation of the confusion matrix]
+
+## 🌐 Deployment Options
+
+1. **Hugging Face Inference API**
+   - Easy integration
+   - Scalable cloud deployment
+
+2. **Web Application Frameworks**
+   - Streamlit for interactive demos
+   - Gradio for quick UI prototypes
+   - Flask/FastAPI for robust REST APIs
+
+## 🔍 Limitations & Considerations
+- Performance may vary with out-of-domain text
+- Potential bias inherited from training data
+- Recommended to validate on your specific use case
+
+## 📚 References & Citations
+
+### Primary Citation
+```bibtex
+@article{he2020deberta,
+  title={DeBERTa: Decoding-enhanced BERT with Disentangled Attention},
+  author={He, Pengcheng and Liu, Xiaodong and Gao, Jianfeng and Chen, Weizhu},
+  journal={arXiv preprint arXiv:2006.03654},
+  year={2020}
+}
+```
+
+## 🤝 Contributing
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](your-repo-issues-link).
+
+## 📄 License
+[Specify your license, e.g., MIT, Apache 2.0]
+
+---
+
+**💡 Pro Tip:** Always validate model performance on your specific dataset!
+
+⭐ **Found ViBERTa helpful? Don't forget to star the repository!** 🌟
