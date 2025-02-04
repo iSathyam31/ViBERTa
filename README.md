@@ -71,7 +71,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
 # Load model and tokenizer
-model_name = "your-huggingface-repo/viberta"
+model_name = "iSathyam03/McD_Reviews_Sentiment_Analysis"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
